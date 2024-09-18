@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  lb:
+    image: haproxy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy
+    depends_on:
+      - chatapp1
+      - chatapp2
+      - chatapp3
+      - chatapp4
+
+  chatapp1:
+    image: chatapp
+    hostname: 'chatapp1'
+    environment:
+      - SERVER_NAME=chatAPP-1
+      - REDIS_HOST=rds
+      - MONGO=mongodb://mongo:27017/BChat
+    depends_on: 
+      - rds
+      - mongo
+
+  chatapp2:
+    image: chatapp
+    hostname: 'chatapp2'
+    environment:
+      - SERVER_NAME=chatAPP-2
+      - REDIS_HOST=rds
+      - MONGO=mongodb://mongo:27017/BChat
+    depends_on: 
+      - rds
+      - mongo
+
+  chatapp3:
+    image: chatapp
+    hostname: 'chatapp3'
+    environment:
+      - SERVER_NAME=chatAPP-3
+      - REDIS_HOST=rds
+      - MONGO=mongodb://mongo:27017/BChat
+    depends_on: 
+      - rds
+      - mongo
+
+  chatapp4:
+    image: chatapp
+    hostname: 'chatapp4'
+    environment:
+      - SERVER_NAME=chatAPP-4
+      - REDIS_HOST=rds
+      - MONGO=mongodb://mongo:27017/BChat
+    depends_on: 
+      - rds
+      - mongo
+  
+  rds:
+    image: redis
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    
+
+
